@@ -24,6 +24,7 @@ end
 
 #Initiate Game
  class Game
+    include Validate
     attr_accessor :board, :rows, :columns
     attr_reader :secret_code
     @@colors = {"r" => :red, "g" => :green, "b" => :blue, "w" => :white, "y" => :yellow }
@@ -56,6 +57,7 @@ end
 
     #Welcome message
     def welcome
+        self.clear
         message = "--------------Welcome to Mastermind--------------\n\n".send(:yellow)
         print message.send(:bold)
     end
@@ -68,10 +70,12 @@ end
 
         if input == 0
             sleep 1
+            self.clear
             print "----------------Welcome Codemaker---------------- \n\n".send(:green).send(:bold)
             Codemaker.new(@@colors, @columns)
         elsif input == 1
             sleep 1
+            self.clear
             print "----------------Welcome Codebreaker-------------- \n".send(:green).send(:bold)
             sleep 1
             color_options()
@@ -190,6 +194,7 @@ class Codebreaker
             print "\n---------------------------------------------------\n".send(:yellow).send(:bold)
             user_input = player.user_input()
             print "---------------------------------------------------\n".send(:yellow).send(:bold)
+            print "                 ...Initializing...".send(:red).send(:bold)
             sleep 1
             self.clear
             player_code = player.player_code
@@ -263,6 +268,7 @@ class Codemaker
         case input
             when 0
                 sleep 1
+                self.clear
                 print "----------------Create Secret Code--------------- \n".send(:blue).send(:bold)
                 sleep 1
                 Game.new.color_options()
@@ -272,6 +278,7 @@ class Codemaker
                 Codebreaker.new(@colors, @secret_code)
             when 1
                 sleep 1
+                self.clear
                 print "----------------Create Secret Code--------------- \n".send(:blue).send(:bold)
                 sleep 1
                 Game.new.color_options()
@@ -293,12 +300,12 @@ class Codemaker
             retry
         end
         
-        self.clear
         print "                 ...Initiating...".send(:red).send(:bold)
         sleep 2
         @secret_code = code
         print "\n------------Secret Code Initiatlized-------------- \n\n".send(:green)
         sleep 1
+        self.clear
         print "                    ...PLAY...\n\n".send(:yellow).send(:bold)
         sleep 1
     end
