@@ -15,6 +15,11 @@ module Validate
 
         test_arr == control ? true : false
     end
+
+    #clear screen
+    def clear
+        print "\e[2J\e[f"
+    end
 end
 
 #Initiate Game
@@ -165,16 +170,18 @@ end
 
 #Initiate class that will handle guesses fron player
 class Codebreaker
+    include Validate
+
     def initialize(colors, secret_code)
         @colors = colors
         @columns = Game.new.columns
         @rows = Game.new.rows
         @board = Game.new.board
         @secret_code = secret_code
-        initiate_code_break()
+        initiate_code_breaker()
     end
 
-    def initiate_code_break
+    def initiate_code_breaker
         player = Player.new(@colors, @board, @columns)
         i = 0
 
@@ -184,6 +191,7 @@ class Codebreaker
             user_input = player.user_input()
             print "---------------------------------------------------\n".send(:yellow).send(:bold)
             sleep 1
+            self.clear
             player_code = player.player_code
             arrow = [Token.new("\u276D", :white)]
 
@@ -192,7 +200,7 @@ class Codebreaker
                 Game.new.color_options()
                 @board.display_board()
                 print "\n      ------------Congratulations!!!-----------".send(:green).send(:bold)
-                print "\n      You have succesfully broken the code! wow!\n"
+                print "\n      You have succesfully broke the code! wow!\n"
                 break
             end
             
@@ -204,8 +212,8 @@ class Codebreaker
         end
 
         if player.player_code != @secret_code
-            print "\n       You have failed to break the code!"
-            print "\n       -----------Game Over!!!-----------\n" 
+            print "\n         You have failed to break the code!"
+            print "\n         ------------Game Over!!!----------\n".send(:yellow).send(:bold) 
         end
     end
 
@@ -267,6 +275,8 @@ class Codemaker
                 print "----------------Create Secret Code--------------- \n".send(:blue).send(:bold)
                 sleep 1
                 Game.new.color_options()
+                secret_code()
+                print "\n\n\n\n          ...AI currently in development...\n\n".send(:red).send(:bold)
                 #AIcodebreaker.new
             else
                 "Please select 0 or 1"
@@ -282,11 +292,13 @@ class Codemaker
             print "Please enter the correct combination of #{@columns} letters:\n"
             retry
         end
-        @secret_code = code
+        
+        self.clear
         print "                 ...Initiating...".send(:red).send(:bold)
         sleep 2
+        @secret_code = code
         print "\n------------Secret Code Initiatlized-------------- \n\n".send(:green)
-        sleep 2
+        sleep 1
         print "                    ...PLAY...\n\n".send(:yellow).send(:bold)
         sleep 1
     end
