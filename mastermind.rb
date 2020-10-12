@@ -66,14 +66,15 @@ end
     def set_up
         print "To be a Codemaker, Press 0 \n"
         print "To be a Codebreaker, Press 1 \n"
-        input = gets.chomp.to_i
+        input = gets.strip
 
-        if input == 0
+        case input 
+        when "0"
             sleep 1
             self.clear
             print "----------------Welcome Codemaker---------------- \n\n".send(:green).send(:bold)
             Codemaker.new(@@colors, @columns)
-        elsif input == 1
+        when "1"
             sleep 1
             self.clear
             print "----------------Welcome Codebreaker-------------- \n".send(:green).send(:bold)
@@ -82,7 +83,7 @@ end
             @board.display_board()
             Codebreaker.new(@@colors, @secret_code)
         else
-            sleep 1
+            self.clear()
             print "Please select 0 or 1\n"
             set_up()
         end
@@ -177,10 +178,11 @@ class Codebreaker
     include Validate
 
     def initialize(colors, secret_code)
+        @initiate_game = Game.new
         @colors = colors
-        @columns = Game.new.columns
-        @rows = Game.new.rows
-        @board = Game.new.board
+        @columns = @initiate_game.columns
+        @rows = @initiate_game.rows
+        @board = @initiate_game.board
         @secret_code = secret_code
         initiate_code_breaker()
     end
@@ -263,29 +265,32 @@ class Codemaker
     def set_up
         print "To play against another player, Press 0 \n"
         print "To play against computer AI, Press 1 \n"
-        input = gets.chomp.to_i
+        input = gets.strip
 
         case input
-            when 0
+            when "0"
                 sleep 1
                 self.clear
                 print "----------------Create Secret Code--------------- \n".send(:blue).send(:bold)
                 sleep 1
-                Game.new.color_options()
+                initiate_game = Game.new
+                initiate_game.color_options()
                 secret_code()
-                Game.new.color_options()
-                Game.new.board.display_board()
+                initiate_game.color_options()
+                initiate_game.board.display_board()
                 Codebreaker.new(@colors, @secret_code)
-            when 1
+            when "1"
                 sleep 1
                 self.clear
                 print "----------------Create Secret Code--------------- \n".send(:blue).send(:bold)
                 sleep 1
-                Game.new.color_options()
+                initiate_game = Game.new
+                initiate_game.color_options()
                 secret_code()
                 print "\n\n\n\n          ...AI currently in development...\n\n".send(:red).send(:bold)
                 #AIcodebreaker.new
             else
+                self.clear()
                 "Please select 0 or 1"
                 set_up()
         end
@@ -301,7 +306,7 @@ class Codemaker
         end
         
         print "                 ...Initiating...".send(:red).send(:bold)
-        sleep 2
+        sleep 1
         @secret_code = code
         print "\n------------Secret Code Initiatlized-------------- \n\n".send(:green)
         sleep 1
