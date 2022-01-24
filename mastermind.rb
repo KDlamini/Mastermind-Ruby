@@ -48,9 +48,9 @@ end
         @@colors.each do |(k,v)|
             print "  | #{k} = #{Token.new.new_token[:token] = "\u25cf".send(v)} "
         end
-        print "|\n   _______________________________________________\n"
+        print "|\n   _______________________________________________\n\n"
         print "Select the correct letter matching a respective color. \n"
-        print "Create a combination of #{@columns} colors without spaces/commas.\n\n"
+        print "Create a combination of #{@columns} colors without spaces/commas. (e.g 'rgbw')\n\n"
     end
 
     protected
@@ -59,13 +59,15 @@ end
     def welcome
         self.clear
         message = "--------------Welcome to Mastermind--------------\n\n".send(:yellow)
+        description = "This is a game where you try to guess the secret code.\nThe secret code has five(8) colours represented with r, g, b, w and y.\nYou have 8 tries to guess the code.\nYou can choose from the following colors:\n\nr = red, g = green, b = blue, w = white, y = yellow.\n\n"
         print message.send(:bold)
+        print description.send(:red)
     end
 
     #Layout for choosing to either make code or break code
     def set_up
-        print "To be a Codemaker, Press 0 \n"
         print "To be a Codebreaker, Press 1 \n"
+        print "To be a Codemaker, Press 0 \n"
         input = gets.strip
 
         case input 
